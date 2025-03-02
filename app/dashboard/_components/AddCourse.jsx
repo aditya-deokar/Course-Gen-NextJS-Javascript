@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs"
 import { Plus } from "lucide-react";
+import Link from "next/link";
 
 
 const AddCourse = () => {
@@ -17,10 +18,12 @@ const AddCourse = () => {
             <p className="text-sm text-gray-500">Create new course with AI, Share with Friends</p>
         </div>
 
-        <Button >
-            <Plus/>
-            Create AI Course
-        </Button>
+        <Link href={"/create-course"}>
+            <Button>
+                <Plus/>
+                Create AI Course
+            </Button>
+        </Link>
     </div>
   )
 }
