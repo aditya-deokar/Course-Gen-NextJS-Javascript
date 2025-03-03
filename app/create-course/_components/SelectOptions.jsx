@@ -1,5 +1,6 @@
 "use client"
 
+import { UserInputContext } from "@/app/_context/userInputContext";
 import { Input } from "@/components/ui/input"
 import {
     Select,
@@ -9,13 +10,30 @@ import {
     SelectValue,
   } from "@/components/ui/select"
 
+import { useContext } from "react";
+
 const SelectOptions = () => {
+
+  const {userCourseInput,setUserCourseInput} =useContext(UserInputContext);
+
+  const handleInputChange=(filedName,value)=>{
+      setUserCourseInput(prev=>(
+        {
+          ...prev,
+          [filedName]:value
+        }
+      ))
+  }
+
+    
   return (
     <div className="px-10 md:px-20 lg:px-44">
         <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium" htmlFor="">Difficulty Level</label>
-                <Select>
+                <Select 
+                defaultValue={userCourseInput?.level}
+                onValueChange={(value)=>handleInputChange("level", value)}>
                     <SelectTrigger className="">
                         <SelectValue placeholder="Select" />
                     </SelectTrigger>
@@ -29,7 +47,9 @@ const SelectOptions = () => {
 
               <div>
                 <label className="text-sm font-medium" htmlFor="">Course Duration</label>
-                <Select>
+                <Select
+                defaultValue={userCourseInput?.duration}
+                onValueChange={(value)=>handleInputChange("duration", value)}>
                     <SelectTrigger className="">
                         <SelectValue placeholder="Select" />
                     </SelectTrigger>
@@ -43,7 +63,9 @@ const SelectOptions = () => {
 
               <div>
                 <label className="text-sm font-medium" htmlFor="">Add Videos</label>
-                <Select>
+                <Select
+                defaultValue={userCourseInput?.video}
+                onValueChange={(value)=>handleInputChange("video", value)}>
                     <SelectTrigger className="">
                         <SelectValue placeholder="Select" />
                     </SelectTrigger>
@@ -56,7 +78,10 @@ const SelectOptions = () => {
 
               <div>
                 <label className="text-sm font-medium" htmlFor="">No of chapters</label>
-                <Input type="number"></Input>
+                <Input
+                  defaultValue={userCourseInput?.noOfChapter}
+                  onChange={(e)=>handleInputChange("noOfChapter", e.target.value)}
+                  className="h-14 text-lg" type="number"></Input>
               </div>
 
         </div>

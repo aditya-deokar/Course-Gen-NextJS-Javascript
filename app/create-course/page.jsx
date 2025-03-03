@@ -2,10 +2,13 @@
 
 import { Button } from '@/components/ui/button'
 import { Lightbulb, SquareMenu, SquareStack } from 'lucide-react'
-import React, { act, useState } from 'react'
+import React, { act, useContext, useEffect, useState } from 'react'
 import SelectCategory from './_components/SelectCategory'
 import TopicDesc from './_components/TopicDesc'
 import SelectOptions from './_components/SelectOptions'
+import { UserInputContext } from '../_context/userInputContext'
+import { GenerateCourseLayout_AI } from '@/configs/AIModel'
+import LoadingDialog from './_components/LoadingDialog'
 
 const CreateCoursePage = () => {
 
@@ -28,6 +31,48 @@ const CreateCoursePage = () => {
     ]
 
     const [activeIndex, setActiveIndex] = useState(0);
+    const [loading, setLoading] = useState(false)
+
+    const {userCourseInput,setUserCourseInput} =useContext(UserInputContext);
+
+    // useEffect(() => {
+    //   console.log(userCourseInput)
+    // }, [userCourseInput])
+    
+
+    const checkStatus=()=>{
+        if(userCourseInput?.length==0){
+            return true;
+        } 
+        if(activeIndex==0 && (userCourseInput?.category?.length==0 || userCourseInput?.category==undefined)){
+            return true;
+        }
+
+        if(activeIndex==1 && (userCourseInput?.topic?.length==0 || userCourseInput?.topic==undefined))
+        {
+            return true;
+        }
+        else if(activeIndex==2 &&  (userCourseInput?.level?.length==undefined || userCourseInput?.duration==undefined || userCourseInput?.video==undefined || userCourseInput?.noOfChapter==undefined) ){
+
+            return true;
+        }
+        return false;
+    }
+
+    const GenerateCourseLayout=async()=>{
+        setLoading(true)
+        const BASIC_PROMPT="Generate A Course Tutorial on following details with field as Course Name, Description, Along with Chapter Name, About, duration";
+
+        const USER_INPUT_PROMPT=`category:${userCourseInput?.category} ,Topic: ${userCourseInput?.topic}, level: ${userCourseInput?.level}, Duration: ${userCourseInput?.duration} , NoOfChapters: ${userCourseInput?.noOfChapter}, in JSON format`;
+
+        const FINAL_PROMPT=BASIC_PROMPT + USER_INPUT_PROMPT;
+        console.log(FINAL_PROMPT);
+
+        const result= await GenerateCourseLayout_AI.sendMessage(FINAL_PROMPT);
+        console.log(result.response?.text());
+        console.log(JSON.parse(result.response?.text()));
+        setLoading(false)
+    }
 
 
   return (
@@ -40,7 +85,7 @@ const CreateCoursePage = () => {
             <div className='flex mt-10'>
                 {
                     StepperOptions.map((item, index)=>(
-                        <div className='flex items-center'>
+                        <div key={index} className='flex items-center'>
                             <div className='flex flex-col items-center w-[50px] md:w-[100px]'>
                                 <div className={`p-3 bg-gray-100 rounded-full ${activeIndex >= index && "bg-gray-300"}`}>
                                 {item.icon}
@@ -79,14 +124,16 @@ const CreateCoursePage = () => {
 
                   <Button variant={"outline"} disabled={activeIndex == 0} onClick={() => setActiveIndex(activeIndex - 1)}>Previous</Button>
                 {
-                    activeIndex <2 &&  <Button disabled={activeIndex == 2} onClick={() => setActiveIndex(activeIndex + 1)}>Next</Button>
+                    activeIndex <2 &&  <Button disabled={checkStatus()} onClick={() => setActiveIndex(activeIndex + 1)}>Next</Button>
                 }
                   {
-                    activeIndex==2 &&  <Button  onClick={() => setActiveIndex(activeIndex + 1)}>Generate Course Layout</Button>
+                    activeIndex==2 &&  <Button disabled={checkStatus()}  onClick={() => GenerateCourseLayout() }>Generate Course Layout</Button>
                   }
               </div>
 
         </div>
+
+        <LoadingDialog loading={loading}/>
 
     </div>
   )
