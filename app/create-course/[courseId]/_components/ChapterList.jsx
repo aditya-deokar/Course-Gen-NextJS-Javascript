@@ -1,7 +1,8 @@
 import { CheckCircle, Clock } from 'lucide-react'
 import React from 'react'
+import EditChapters from './EditChapters'
 
-const ChapterList = ({course}) => {
+const ChapterList = ({course ,refreshData}) => {
   return (
     <div className='mt-3 '>
         <h2 className='text-2xl font-bold'>Chapters</h2>
@@ -11,7 +12,10 @@ const ChapterList = ({course}) => {
                      <div className='flex gap-5 items-center'>
                     <h2 className='bg-primary h-10 w-10 p-2 text-primary-foreground rounded-full text-center flex-none'>{index + 1}</h2>
                     <div>
-                        <h2 className='font-medium text-lg'>{chapter?.ChapterName}</h2>
+                        <h2 className='font-medium text-lg'>
+                          {chapter?.ChapterName} 
+                          <EditChapters refreshData={()=>refreshData()} course={course} index={index}/>
+                        </h2>
                         <p className='text-sm w-[94%] text-secondary-foreground'>{chapter?.About}</p>
                         <p className='flex gap-2 text-secondary-foreground mt-2 items-center'> <Clock/> {chapter?.Duration}</p>
                     </div>

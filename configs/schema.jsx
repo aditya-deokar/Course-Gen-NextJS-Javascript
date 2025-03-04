@@ -1,4 +1,4 @@
-import { json, pgTable, serial, varchar } from "drizzle-orm/pg-core";
+import { boolean, json, pgTable, serial, varchar } from "drizzle-orm/pg-core";
 
 export const CourseList = pgTable("courseList",{
     id:serial('').primaryKey(),
@@ -10,6 +10,8 @@ export const CourseList = pgTable("courseList",{
     courseOutput:json("courseOutput").notNull(),
     createdBy:varchar("createdBy").notNull(),
     userName:varchar("userName"),
-    userProfileImage:varchar("userProfileImage")
+    userProfileImage:varchar("userProfileImage"),
+    courseBanner:varchar("courseBanner").default('/file.svg'),
+    publish:boolean("publish").default(false)
 
 })
