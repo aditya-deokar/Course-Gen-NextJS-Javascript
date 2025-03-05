@@ -1,7 +1,7 @@
 "use client"
 
 import { db } from "@/configs/db"
-import { CourseList } from "@/configs/schema"
+import { Chapters, CourseList } from "@/configs/schema"
 import { useUser } from "@clerk/nextjs"
 import { and, eq } from "drizzle-orm"
 import { useEffect, useState } from "react"
@@ -11,11 +11,15 @@ import ChapterList from "./_components/ChapterList"
 import { Button } from "@/components/ui/button"
 import { GenerateChapterContent_AI } from "@/configs/AIModel"
 import LoadingDialog from "../_components/LoadingDialog"
+import service from "@/configs/service"
+import { useRouter } from "next/navigation"
 
 const CoursePage = ({params}) => {
     const {user} =useUser();
     const [course, setCourse] = useState([]);
     const [loading , setLoading]= useState(false);
+
+    const router = useRouter();
 
 
     useEffect(() => {
@@ -43,23 +47,49 @@ const CoursePage = ({params}) => {
 
         console.log(PROMTP);
 
-        if(index==0){
+        // if(index < 3 ){
           try {
+            let videoId='';
+
+              // video content
+              service.getVideo(course?.name+':'+chapter?.ChapterName).then(resp=>{
+                console.log(resp);
+                videoId=resp[0]?.id?.videoId
+              })
+
+
+
             // text content
             const result = await GenerateChapterContent_AI.sendMessage(PROMTP);
             console.log(result?.response?.text());
+            const content= JSON.parse(result?.response?.text());
 
-            // video content
+          
 
 
             // db save
+            await db.insert(Chapters).values({
+              chapterId:index,
+              courseId:course?.courseId,
+              content:content,
+              videoId:videoId
+            })
+
             setLoading(false);
             
           } catch (error) {
             setLoading(false)
             console.log(error)
           }
-        }
+
+
+          // publish course
+          await db.update(CourseList).set({
+            publish:true
+          })
+
+          router.replace('/create-course/'+course?.courseId+'/finish')
+        // }
       })
     }
 
