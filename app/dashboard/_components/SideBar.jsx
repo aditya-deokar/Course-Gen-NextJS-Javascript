@@ -41,7 +41,7 @@ const SideBar = () => {
     const path= usePathname();
   return (
     <div className='fixed h-full md:w-64 p-5 shadow-lg'>
-        <Image src={"/next.svg"} width={100} height={100}/>
+        <Image src={"/next.svg"} width={100} height={100} alt='logo'/>
         <hr className='my-5' />
 
         <ul>
