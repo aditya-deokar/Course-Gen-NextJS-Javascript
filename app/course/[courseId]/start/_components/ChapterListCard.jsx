@@ -3,7 +3,7 @@ import React from 'react'
 
 const ChapterListCard = ({chapter, index}) => {
   return (
-    <div className='grid grid-cols-5 p-4 items-center border-b'>
+    <div key={index} className='grid grid-cols-5 p-4 items-center border-b'>
         <div>
             <h2 className='p-1 bg-primary text-white w-8 h-8 rounded-full text-center'>{index+1}</h2>
         </div>

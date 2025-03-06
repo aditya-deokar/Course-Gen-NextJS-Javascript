@@ -15,6 +15,10 @@ const CourseStartPage = ({params}) => {
 
     useEffect(()=>{
         GetCourse();
+      
+
+        // setSelectedChapter(course?.courseOutput?.Chapters[0]);
+        // GetSelectedChapterContent(0);
     },[])
 
     const GetCourse=async()=>{

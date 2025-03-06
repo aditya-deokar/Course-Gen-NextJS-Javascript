@@ -11,8 +11,8 @@ const opts = {
   };
 
 const ChapterContent = ({chapter, content}) => {
-    console.log(chapter);
-    console.log(content);
+    // console.log(chapter);
+    // console.log(content);
 
   
 

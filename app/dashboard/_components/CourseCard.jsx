@@ -8,7 +8,7 @@ import Link from "next/link"
 
 
 
-const CourseCard = ({course ,refreshData}) => {
+const CourseCard = ({ course ,refreshData, displayUser=false }) => {
 
     const handleOnDelete=async()=>{
         const resp = await db.delete(CourseList)
@@ -27,16 +27,18 @@ const CourseCard = ({course ,refreshData}) => {
 
   return (
    <Link href={'/course/'+course?.courseId} className="">
-         <div className="shadow-md p-2 mt-4 rounded-lg hover:-translate-y-2 cursor-pointer transition-all duration-300">
+         <div className="shadow-md p-2 mt-4 rounded-lg hover:-translate-y-2 border hover:border-2 cursor-pointer transition-all duration-300">
         <Image src={course?.courseBanner} width={300} height={200} alt="banner" className="h-[200px] w-full object-contain rounded-xl"/>
 
         <div className="p-2">
             <h2 className="font-medium text-lg flex justify-between items-center">
                 {course?.courseOutput?.CourseName}
                 
-                <DropDownOption handleOnDelete={handleOnDelete}>
-                    <EllipsisVertical/>
-                </DropDownOption>
+                {
+                    !displayUser &&<DropDownOption handleOnDelete={handleOnDelete}>
+                            <EllipsisVertical/>
+                        </DropDownOption>
+                }
             </h2>
             <p className="text-primary/50 text-sm my-1">{course?.category}</p>
 
@@ -47,6 +49,17 @@ const CourseCard = ({course ,refreshData}) => {
                 </h2>
                 <h2 className="p-1 bg-purple-200 rounded text-primary text-sm">{course?.courseOutput?.Level}</h2>
             </div>
+
+            {
+               displayUser && <div className="flex gap-2 items-center mt-2">
+                <Image src={course.userProfileImage} 
+                width={33} height={33} alt="user image"
+                className="rounded-full"
+                ></Image>
+                <h2 className="text-sm font-medium">{course?.userName}</h2>
+
+            </div>
+            }
         </div>
     </div>
    </Link>
