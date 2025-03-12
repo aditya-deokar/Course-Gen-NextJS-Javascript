@@ -1,6 +1,7 @@
 import React from 'react'
 import YouTube from 'react-youtube';
 import ReactMarkdown from "react-markdown"
+import CodeSnippet from './CodeSnippet';
 
 const opts = {
     height: '390',
@@ -43,13 +44,8 @@ const ChapterContent = ({chapter, content}) => {
 
                         <ReactMarkdown>{item.description}</ReactMarkdown>
                         {
-                            item.code_example && <div className='p-4 bg-black text-white rounded mt-2'>
-                            <pre>
-                                <code>
-                                    {item.code_example}
-                                </code>
-                            </pre>
-                        </div>
+                            item.code_example && <CodeSnippet code={item.code_example} language="python"/>
+                                    
                         }
                     </div>
                 ))

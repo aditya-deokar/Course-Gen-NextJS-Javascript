@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Lightbulb, SquareMenu, SquareStack } from 'lucide-react'
-import React, { act, useContext, useEffect, useState } from 'react'
+import  { useContext, useEffect, useState } from 'react'
 import SelectCategory from './_components/SelectCategory'
 import TopicDesc from './_components/TopicDesc'
 import SelectOptions from './_components/SelectOptions'
@@ -74,7 +74,7 @@ const CreateCoursePage = () => {
         const USER_INPUT_PROMPT=`category:${userCourseInput?.category} ,Topic: ${userCourseInput?.topic}, level: ${userCourseInput?.level}, Duration: ${userCourseInput?.duration} , NoOfChapters: ${userCourseInput?.noOfChapter}, in JSON format`;
 
         const FINAL_PROMPT=BASIC_PROMPT + USER_INPUT_PROMPT;
-        console.log(FINAL_PROMPT);
+        // console.log(FINAL_PROMPT);
 
         const result= await GenerateCourseLayout_AI.sendMessage(FINAL_PROMPT);
         console.log(result.response?.text());

@@ -2,7 +2,7 @@
 import { db } from '@/configs/db'
 import { Chapters, CourseList } from '@/configs/schema'
 import { and, eq } from 'drizzle-orm'
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import ChapterListCard from './_components/ChapterListCard'
 import ChapterContent from './_components/ChapterContent'
 
@@ -12,6 +12,7 @@ const CourseStartPage = ({params}) => {
 
     const [selectedChapter, setSelectedChapter] = useState();
     const [chapterContent, setChapterContent] = useState();
+    const resolvedParams = use(params);
 
     useEffect(()=>{
         GetCourse();
@@ -23,7 +24,7 @@ const CourseStartPage = ({params}) => {
 
     const GetCourse=async()=>{
         const result = await db.select().from(CourseList).where(
-            eq(CourseList?.courseId, params?.courseId)
+            eq(CourseList.courseId, resolvedParams?.courseId)
         )
 
         // console.log(result)
@@ -35,7 +36,7 @@ const CourseStartPage = ({params}) => {
         const result = await db.select().from(Chapters).where(
             and(
                 eq(Chapters.chapterId,chapterId),
-                eq(Chapters.courseId, course.courseId)
+                eq(Chapters.courseId, course?.courseId)
             )
         )
 
