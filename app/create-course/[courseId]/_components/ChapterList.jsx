@@ -10,7 +10,7 @@ const ChapterList = ({ course, refreshData, edit = true }) => {
         {
           course ?
             course?.courseOutput?.Chapters.map((chapter, index) => (
-              <div className='border p-5 rounded-lg flex items-center justify-between'>
+              <div key={index} className='border p-5 rounded-lg flex items-center justify-between'>
                 <div className='flex gap-5 items-center'>
                   <h2 className='bg-primary h-10 w-10 p-2 text-primary-foreground rounded-full text-center flex-none'>{index + 1}</h2>
                   <div>
