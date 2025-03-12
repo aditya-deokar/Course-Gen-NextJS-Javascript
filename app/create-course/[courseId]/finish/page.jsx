@@ -4,28 +4,30 @@ import { CourseList } from '@/configs/schema';
 import { useUser } from '@clerk/nextjs';
 import { and, eq } from 'drizzle-orm';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import  { use, useEffect, useState } from 'react'
 import CourseBasicInfo from '../_components/CourseBasicInfo';
 import { ClipboardCopy } from 'lucide-react';
+
 
 const FinishScreenPage = ({params}) => {
 
   const {user} =useUser();
   const [course, setCourse] = useState([]);
   const [loading , setLoading]= useState(false);
+  const resolvedParams = use(params);
 
   const router = useRouter();
 
   useEffect(() => {
-      params && GetCourse();
-    }, [params,user])
+    resolvedParams && GetCourse();
+    }, [resolvedParams,user])
     
 
     const GetCourse=async()=>{
         const result= await db.select().from(CourseList)
         .where(
             and(
-                eq(CourseList.courseId,params?.courseId),
+                eq(CourseList.courseId,resolvedParams?.courseId),
                 eq(CourseList?.createdBy,user.primaryEmailAddress.emailAddress)
             )
         )
