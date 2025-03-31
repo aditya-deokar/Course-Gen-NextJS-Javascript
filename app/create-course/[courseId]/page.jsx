@@ -11,7 +11,7 @@ import ChapterList from "./_components/ChapterList"
 import { Button } from "@/components/ui/button"
 import { GenerateChapterContent_AI } from "@/configs/AIModel"
 import LoadingDialog from "../_components/LoadingDialog"
-import service from "@/configs/service"
+// import service from "@/configs/service"
 import { useRouter } from "next/navigation"
 
 const CoursePage = ({params}) => {
@@ -52,10 +52,10 @@ const CoursePage = ({params}) => {
             let videoId='';
 
               // video content
-              service.getVideo(course?.name+':'+chapter?.ChapterName).then(resp=>{
-                console.log(resp);
-                videoId=resp[0]?.id?.videoId
-              })
+              // service.getVideo(course?.name+':'+chapter?.ChapterName).then(resp=>{
+              //   console.log(resp);
+              //   videoId=resp[0]?.id?.videoId
+              // })
 
 
 
@@ -72,7 +72,7 @@ const CoursePage = ({params}) => {
               chapterId:index,
               courseId:course?.courseId,
               content:content,
-              videoId:videoId
+              videoId:"videoId"
             })
 
             setLoading(false);

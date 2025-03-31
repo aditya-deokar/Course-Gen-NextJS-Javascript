@@ -6,19 +6,21 @@ import Header from '@/app/dashboard/_components/Header'
 import { db } from '@/configs/db'
 import { CourseList } from '@/configs/schema'
 import { eq } from 'drizzle-orm'
-import React, { useEffect, useState } from 'react'
+
+import { use, useEffect, useState } from 'react'
 
 const CoursePage = ({params}) => {
 
     const [course, setCourse] = useState();
+    const resolvedParams = use(params);
 
     useEffect(()=>{
-        params && GetCourse();
-    },[params])
+        resolvedParams && GetCourse();
+    },[resolvedParams])
 
     const GetCourse=async()=>{
         const result= await db.select().from(CourseList).where(
-            eq(CourseList?.courseId, params?.courseId)
+            eq(CourseList?.courseId, resolvedParams?.courseId)
         )
 
         setCourse(result[0]);
