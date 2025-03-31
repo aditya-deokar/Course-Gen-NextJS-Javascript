@@ -11,7 +11,7 @@ import ChapterList from "./_components/ChapterList"
 import { Button } from "@/components/ui/button"
 import { GenerateChapterContent_AI } from "@/configs/AIModel"
 import LoadingDialog from "../_components/LoadingDialog"
-import service from "@/configs/service"
+// import service from "@/configs/service"
 import { useRouter } from "next/navigation"
 
 
@@ -52,6 +52,30 @@ const CoursePage = async({params}) => {
 
       console.log(PROMTP);
 
+<<<<<<< HEAD
+              // video content
+              // service.getVideo(course?.name+':'+chapter?.ChapterName).then(resp=>{
+              //   console.log(resp);
+              //   videoId=resp[0]?.id?.videoId
+              // })
+
+
+
+            // text content
+            const result = await GenerateChapterContent_AI.sendMessage(PROMTP);
+            console.log(result?.response?.text());
+            const content= JSON.parse(result?.response?.text());
+
+          
+
+
+            // db save
+            await db.insert(Chapters).values({
+              chapterId:index,
+              courseId:course?.courseId,
+              content:content,
+              videoId:"videoId"
+=======
      
         try {
           let videoId='';
@@ -60,6 +84,7 @@ const CoursePage = async({params}) => {
             service.getVideo(course?.name+':'+chapter?.ChapterName).then(resp=>{
               console.log(resp);
               videoId=resp[0]?.id?.videoId
+>>>>>>> 5085d27c9b57d64ec591d7c4ea611d41cdbb5b88
             })
 
 
